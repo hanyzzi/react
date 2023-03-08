@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
-import WriteActionButtons from '../../components/write/WriteActionButtons';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate  } from 'react-router-dom';
-import { writePost } from '../../modules/write';
+import React, { useEffect } from "react";
+import WriteActionButtons from "../../components/write/WriteActionButtons";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+// import { writePost } from '../../modules/write';
+import { db } from "../../firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 const WriteActionButtonsContainer = () => {
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
+  const postsCollection = collection(db, "posts");
+  const uuid = uuidv4()
+  // const dispatch = useDispatch();
   const { title, body, tags, post, postError } = useSelector(({ write }) => ({
     title: write.title,
     body: write.body,
@@ -17,19 +21,30 @@ const WriteActionButtonsContainer = () => {
   }));
 
   // 포스트 등록
-  const onPublish = () => {
-    dispatch(
-      writePost({
-        title,
-        body,
-        tags,
-      }),
-    );
+  const onPublish = async () => {
+    let date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formatted = `${year}-${month}-${day}`;
+    
+    const insertData = await addDoc(postsCollection, {
+      _id: uuid,
+      title: title,
+      body: body,
+      publishedDate: formatted,
+      tags: tags,
+      user: localStorage.getItem("username"),
+    });
+    console.log(insertData);
+
+    alert("등록되었습니다.")
+    navigate("/");
   };
 
   // 취소
   const onCancel = () => {
-    // goBack();
+    navigate("/");
   };
 
   // 성공 혹은 실패시 할 작업
@@ -41,7 +56,7 @@ const WriteActionButtonsContainer = () => {
     if (postError) {
       console.log(postError);
     }
-  }, [ post, postError]);
+  }, [post, postError]);
   return <WriteActionButtons onPublish={onPublish} onCancel={onCancel} />;
 };
 
