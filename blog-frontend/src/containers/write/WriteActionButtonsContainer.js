@@ -28,10 +28,12 @@ const WriteActionButtonsContainer = () => {
     const day = date.getDate();
     const formatted = `${year}-${month}-${day}`;
     
+    const newbody = body.replace(/<[^>]*>?/g, '');
+
     const insertData = await addDoc(postsCollection, {
       _id: uuid,
       title: title,
-      body: body,
+      body: newbody,
       publishedDate: formatted,
       tags: tags,
       user: localStorage.getItem("username"),
