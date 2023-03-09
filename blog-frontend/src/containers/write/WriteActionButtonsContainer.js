@@ -35,6 +35,7 @@ const WriteActionButtonsContainer = () => {
       publishedDate: formatted,
       tags: tags,
       user: localStorage.getItem("username"),
+      userid: localStorage.getItem("userid"),
     });
     console.log(insertData);
 

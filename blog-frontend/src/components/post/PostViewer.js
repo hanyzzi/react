@@ -64,7 +64,8 @@ const PostViewer = () => {
         </Tags>
       </PostHead>
       <PostContent
-        dangerouslySetInnerHTML={{ _ _html: '<p>HTML <b>내용</b>입니다.</p>' }}
+        // eslint-disable-next-line no-undef
+        dangerouslySetInnerHTML={{ _, _html: '<p>HTML <b>내용</b>입니다.</p>' }}
       />
     </PostViewerBlock>
   );
