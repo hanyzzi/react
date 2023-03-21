@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
+import moment from 'moment'
 
 const WriteActionButtonsContainer = () => {
   const navigate = useNavigate();
@@ -22,11 +23,8 @@ const WriteActionButtonsContainer = () => {
 
   // 포스트 등록
   const onPublish = async () => {
-    let date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const formatted = `${year}-${month}-${day}`;
+    const formatted = moment().format('YYYY-MM-DD');
+    const time = moment().format('YYYY-MM-DD HH:mm:ss');
     
     const newbody = body.replace(/<[^>]*>?/g, '');
 
@@ -35,6 +33,7 @@ const WriteActionButtonsContainer = () => {
       title: title,
       body: newbody,
       publishedDate: formatted,
+      publishedTime: time,
       tags: tags,
       user: localStorage.getItem("username"),
       userid: localStorage.getItem("userid"),

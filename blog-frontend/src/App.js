@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import WritePage from "./pages/WritePage";
 import PostPage from "./pages/PostPage";
-// import { firestore } from "../firebase";
 
 class App extends Component {
   render() {
@@ -15,7 +14,7 @@ class App extends Component {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/PostListPage/:id" element={<PostListPage />} />
-        <Route path="/PostPage/:userid/:postId" element={<PostPage />} />
+        <Route path="/PostPage/:postId" element={<PostPage />} />
         <Route path="/write" element={<WritePage />} />
       </Routes>
     );
