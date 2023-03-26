@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
 
 const buttonStyle = css`
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
@@ -28,11 +30,11 @@ const buttonStyle = css`
     `}
 
   ${props =>
-    props.cyan &&
+    props.blue &&
     css`
-      background: ${palette.cyan[5]};
+      background: ${palette.blue[5]};
       &:hover {
-        background: ${palette.cyan[4]};
+        background: ${palette.blue[4]};
       }
     `}
 

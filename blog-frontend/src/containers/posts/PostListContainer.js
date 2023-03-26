@@ -24,14 +24,11 @@ import SubInfo from "../../components/common/SubInfo";
 import Tags from "../../components/common/Tags";
 // import Pagination from "../../components/posts/Pagination";
 import PostActionButtons from "../../components/post/PostActionButtons";
-import SearchBar from "../../components/post/SearchBar";
-
-function handleSearch(searchTerm) {
-  // 검색어 처리 로직 구현
-  console.log(`검색어: ${searchTerm}`);
-}
+// import SearchIcon from "../../components/search/SearchIcon";
+import SearchBar from "../../components/search/SearchBar";
 
 const SearchBarBlock = styled.div`
+  width: 80%;
   margin-right: auto;
 `;
 
@@ -141,10 +138,10 @@ const PostListContainer = () => {
       <PostListBlock>
         <WritePostButtonWrapper>
         <SearchBarBlock>
-          <SearchBar onSearch={handleSearch}></SearchBar>
+          <SearchBar></SearchBar>
         </SearchBarBlock>
           {localStorage.getItem("userid") !== null && (
-            <Button cyan to="/write">
+            <Button blue to="/write">
               새 글 작성하기
             </Button>
           )}
