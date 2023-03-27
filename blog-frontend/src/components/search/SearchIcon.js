@@ -7,6 +7,7 @@ const button = {
   fontSize: '2rem',
   border: 'none',
   background: 'transparent',
+  color: '#333',
   cursor: 'pointer'
 }
   return (
