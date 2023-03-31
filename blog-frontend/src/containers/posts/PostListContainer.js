@@ -45,27 +45,23 @@ const WritePostButtonWrapper = styled.div`
 const PostItemWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
-
-  
-  
 `;
 
 const PostItemBlock = styled.div`
   flex: 0 0 auto;
-  width: calc(33% - 2rem);
+  width: calc(33% - 1rem);
   min-height: 450px;
   max-height: 500px;
   padding: 2rem 3rem;
-  margin: 0 1rem 2.5rem;
+  margin: 0 0.5rem 2.5rem;
   border: 1px solid #f7f7f7;
-  box-shadow: 5px 38px 90px rgba(102, 102, 102, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 30px;
   cursor: pointer;
   transition: box-shadow, transform 0.3s ease-in-out;
 
   &:hover {
     transform: translateY(-10px);
-    box-shadow: rgba(149, 157, 165, 0.15) 0px 8px 14px;
     color: ${palette.gray[6]};
     
   }
@@ -168,23 +164,23 @@ const PostListContainer = () => {
           {postData &&
             postData.map((post) => (
               <PostItemBlock key={post["_id"]}>
-                <h2>
-                  <Link to={`PostPage/${post["_id"]}`}>
+                <Link to={`PostPage/${post["_id"]}`}>
+                  <h2>
                     {post["title"]}
-                  </Link>
-                </h2>
-                <SubInfo
-                  username={post["user"]}
-                  publishedDate={new Date(post["publishedDate"])}
-                />
-                <Tags tags={post["tags"]} />
-                <p>{post["body"]}</p>
-                {post["userid"] === localStorage.getItem("userid") && (
-                  <PostActionButtons
-                    onEdit={() => editPost(post["id"])}
-                    onRemove={() => deletePost(post["id"])}
+                  </h2>
+                  <SubInfo
+                    username={post["user"]}
+                    publishedDate={new Date(post["publishedDate"])}
                   />
-                )}
+                  <Tags tags={post["tags"]} />
+                  <p>{post["body"]}</p>
+                  {post["userid"] === localStorage.getItem("userid") && (
+                    <PostActionButtons
+                      onEdit={() => editPost(post["id"])}
+                      onRemove={() => deletePost(post["id"])}
+                    />
+                  )}
+                </Link>
               </PostItemBlock>
             ))}
         </PostItemWrap>

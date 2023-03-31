@@ -5,6 +5,7 @@ import { collection, getDocs, where, query } from "firebase/firestore";
 
 import SubInfo from "../../components/common/SubInfo";
 import Tags from "../../components/common/Tags";
+import PostComment from "../../components/post/PostComment";
 import styled from "styled-components";
 import palette from "../../lib/styles/palette";
 import Responsive from "../../components/common/Responsive";
@@ -25,6 +26,10 @@ const PostHead = styled.div`
 const PostContent = styled.div`
   font-size: 1.3125rem;
   color: ${palette.gray[8]};
+`;
+
+const PostCommentwrap =styled.div`
+  margin-top: 3rem;
 `;
 
 const PostViewerContainer = () => {
@@ -64,9 +69,11 @@ const PostViewerContainer = () => {
             <PostContent
               dangerouslySetInnerHTML={{ __html: postDetail["body"] }}
             />
+            <PostCommentwrap>
+               <PostComment/>
+            </PostCommentwrap>
           </PostViewerBlock>
         ))}
-      ;
     </div>
   );
 };
