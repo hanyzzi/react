@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import palette from "../../lib/styles/palette";
 
 const CommentWrapper = styled.div`
-    display: flex; 
-    margin-bottom: 10px;
- `;
-const CommentText = styled.div`
+    margin: 10px 0;
+    padding: 10px 20px; 
     background-color: #f5f5f5; 
-    padding: 10px; 
     border-radius: 5px;
+ `;
+const UserName = styled.div`
+    margin-bottom: 5px;
+    color: ${palette.blue[5]};
+`;
+const CommentText = styled.div`
  `;
 const CommentInput = styled.input`
     width: 80%;
@@ -34,9 +37,10 @@ const CommentSubmit = styled.button`
     &:hover { background-color: ${palette.blue[4]}; #2196F3; }
  `;
 
- function Comment({ text }) {
+ function Comment({ user, text }) {
     return (
         <CommentWrapper>
+            <UserName>{localStorage.getItem("username")}</UserName>
             <CommentText>{text}</CommentText>
         </CommentWrapper>
     );
@@ -52,7 +56,7 @@ function CommentForm({ onSubmit }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{display: 'flex'}}>
             <CommentInput
                 type="text"
                 value={text}
@@ -68,7 +72,7 @@ function CommentList({ comments }) {
     return (
         <div>
             {comments.map((comment) => (
-            <Comment key={comment.id} text={comment.text} />
+                <Comment key={comment.id} text={comment.text} />
             ))}
         </div>
     );

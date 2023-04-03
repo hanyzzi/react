@@ -18,8 +18,9 @@ const TagForm = styled.form`
   border-radius: 4px;
   overflow: hidden;
   display: flex;
-  width: 256px;
-  border: 1px solid ${palette.gray[9]}; /* 스타일 초기화 */
+  width: 30%;
+  border: 1px solid ${palette.gray[2]}; /* 스타일 초기화 */
+  border-radius: 25px;
   input,
   button {
     outline: none;
@@ -47,7 +48,7 @@ const TagForm = styled.form`
 
 const Tag = styled.div`
   margin-right: 0.5rem;
-  color: ${palette.gray[6]};
+  color: ${palette.blue[5]};
   cursor: pointer;
   &:hover {
     opacity: 0.5;

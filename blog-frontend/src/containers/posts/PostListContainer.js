@@ -24,7 +24,6 @@ import SubInfo from "../../components/common/SubInfo";
 import Tags from "../../components/common/Tags";
 // import Pagination from "../../components/posts/Pagination";
 import PostActionButtons from "../../components/post/PostActionButtons";
-// import SearchIcon from "../../components/search/SearchIcon";
 import SearchBar from "../../components/search/SearchBar";
 
 const SearchBarBlock = styled.div`
@@ -55,7 +54,7 @@ const PostItemBlock = styled.div`
   padding: 2rem 3rem;
   margin: 0 0.5rem 2.5rem;
   border: 1px solid #f7f7f7;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 30px;
   cursor: pointer;
   transition: box-shadow, transform 0.3s ease-in-out;
