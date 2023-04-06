@@ -16,6 +16,7 @@ class App extends Component {
         <Route path="/PostListPage/:id" element={<PostListPage />} />
         <Route path="/PostPage/:postId" element={<PostPage />} />
         <Route path="/write" element={<WritePage />} />
+        <Route path="/edit/:postId" element={<WritePage />} />
       </Routes>
     );
   }

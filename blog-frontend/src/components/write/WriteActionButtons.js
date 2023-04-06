@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import Button from '../common/Button';
-import palette from '../../lib/styles/palette';
+import React from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import Button from "../common/Button";
+import palette from "../../lib/styles/palette";
 
 const WriteActionButtonsBlock = styled.div`
   display: flex;
@@ -21,12 +22,21 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const WriteActionButtons = ({ onCancel, onPublish }) => {
+const WriteActionButtons = ({ onCancel, onPublish, onEdited }) => {
+  const { postId } = useParams();
+
   return (
     <WriteActionButtonsBlock>
-      <StyledButton blue onClick={onPublish}>
-        포스트 등록
-      </StyledButton>
+      {(postId === null || postId === undefined) && (
+        <StyledButton blue onClick={onPublish}>
+          포스트 등록
+        </StyledButton>
+      )}
+      {postId !== null && postId !== undefined && (
+        <StyledButton blue onClick={onEdited}>
+          포스트 수정
+        </StyledButton>
+      )}
       <StyledButton onClick={onCancel}>취소</StyledButton>
     </WriteActionButtonsBlock>
   );

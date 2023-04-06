@@ -15,6 +15,7 @@ import {
   orderBy,
   deleteDoc,
   doc,
+  where
 } from "firebase/firestore";
 import styled from "styled-components";
 import Responsive from "../../components/common/Responsive";
@@ -87,14 +88,25 @@ const PostListContainer = () => {
   let realArr = [];
 
   const editPost = (docName) => {
-    navigate("/write/" + docName);
+    navigate("/edit/" + docName);
   };
 
   const deletePost = async (docName) => {
-    alert("삭제되었습니다.");
+    let collectionID = ""
+    
+    const q = query(collection(db, "posts"), where("_id", "==", docName));
+    const data = await getDocs(q);
+    
+    data.forEach((docs) => {
+      // 가져온 모든 문서들을 확인
+      collectionID = docs.id;
+    });
 
-    const postRef = doc(db, "posts", docName);
+    const postRef = doc(db, "posts", collectionID);
     await deleteDoc(postRef);
+
+    alert("삭제되었습니다.");
+    window.location.reload();
   };
 
   const handleScroll = async () => {
@@ -133,7 +145,6 @@ const PostListContainer = () => {
     realArr = nextPost;
     setPostData(nextPost);
 
-    console.log(realArr);
     lastVisible = data.docs[data.docs.length - 1];
   };
 
@@ -173,13 +184,13 @@ const PostListContainer = () => {
                   />
                   <Tags tags={post["tags"]} />
                   <p>{post["body"]}</p>
-                  {post["userid"] === localStorage.getItem("userid") && (
+                </Link>
+                {post["userid"] === localStorage.getItem("userid") && (
                     <PostActionButtons
-                      onEdit={() => editPost(post["id"])}
-                      onRemove={() => deletePost(post["id"])}
+                      onEdit={() => editPost(post["_id"])}
+                      onRemove={() => deletePost(post["_id"])}
                     />
                   )}
-                </Link>
               </PostItemBlock>
             ))}
         </PostItemWrap>
