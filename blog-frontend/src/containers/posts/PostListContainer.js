@@ -9,13 +9,13 @@ import { db } from "../../firebase";
 import {
   collection,
   getDocs,
-  where,
   limit,
   query,
   startAfter,
   orderBy,
   deleteDoc,
   doc,
+  where
 } from "firebase/firestore";
 import styled from "styled-components";
 import Responsive from "../../components/common/Responsive";
@@ -52,6 +52,7 @@ const PostItemBlock = styled.div`
   width: calc(33% - 1rem);
   min-height: 450px;
   max-height: 500px;
+  padding: 2rem 3rem;
   margin: 0 0.5rem 2.5rem;
   border: 1px solid #f7f7f7;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -59,12 +60,6 @@ const PostItemBlock = styled.div`
   cursor: pointer;
   transition: box-shadow, transform 0.3s ease-in-out;
 
-  > a {
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 2rem 3rem;
-  }
   &:hover {
     transform: translateY(-10px);
     color: ${palette.gray[6]};
@@ -88,21 +83,30 @@ const PostItemBlock = styled.div`
 const PostListContainer = () => {
   const navigate = useNavigate();
   const [postData, setPostData] = useState([]);
-  const [searchCategory, setSearchCategory] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState([]);
 
   let lastVisible = "";
   let realArr = [];
 
   const editPost = (docName) => {
-    navigate("/write/" + docName);
+    navigate("/edit/" + docName);
   };
 
   const deletePost = async (docName) => {
-    alert("삭제되었습니다.");
+    let collectionID = ""
+    
+    const q = query(collection(db, "posts"), where("_id", "==", docName));
+    const data = await getDocs(q);
+    
+    data.forEach((docs) => {
+      // 가져온 모든 문서들을 확인
+      collectionID = docs.id;
+    });
 
-    const postRef = doc(db, "posts", docName);
+    const postRef = doc(db, "posts", collectionID);
     await deleteDoc(postRef);
+
+    alert("삭제되었습니다.");
+    window.location.reload();
   };
 
   const handleScroll = async () => {
@@ -110,29 +114,12 @@ const PostListContainer = () => {
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {
-      
-      let nextq;
-
-      if(searchKeyword) { 
-        console.log(searchKeyword);
-        nextq = query(
-          collection(db, "posts"),
-          where(searchCategory, ">=", searchKeyword),
-          where(searchCategory, "<=", searchKeyword + "\uf8ff"),
-          orderBy(searchCategory, "desc"),
-          orderBy("publishedTime", "desc"),
-          startAfter(lastVisible),
-          limit(4)
-        );
-      }else{
-        nextq = query(
-          collection(db, "posts"),
-          orderBy("publishedTime", "desc"),
-          startAfter(lastVisible),
-          limit(4)
-        );
-      }
-     
+      const nextq = query(
+        collection(db, "posts"),
+        orderBy("publishedTime", "desc"),
+        startAfter(lastVisible),
+        limit(4)
+      );
 
       const data = await getDocs(nextq);
       const addData = data.docs.map((doc) => ({ ...doc.data() }));
@@ -145,58 +132,7 @@ const PostListContainer = () => {
     }
   };
 
-  const handleSearch = async (category, keyword) => {
-   
-    console.log("handleSearch");
-    const searchCategory = category.value;
-    setSearchCategory(searchCategory);
-    setSearchKeyword(keyword);
-    
-    let q;
-    if(searchCategory === 'comment' && keyword){
-      q = query(
-        collection(db, "comment"),
-        where("body", ">=", keyword),
-        where("body", "<=", keyword + "\uf8ff"),
-        orderBy("publishedTime", "desc"),
-        limit(4)
-      );
-    }else if(keyword){
-      q = query(
-        collection(db, "posts"),
-        where(searchCategory, ">=", keyword),
-        where(searchCategory, "<=", keyword + "\uf8ff"),
-        orderBy(searchCategory, "desc"),
-        orderBy("publishedTime", "desc"),
-        limit(4)
-      );
-    }else{
-      q = query(
-        collection(db, "posts"),
-        orderBy("publishedTime", "desc"),
-        startAfter(lastVisible),
-        limit(4)
-      );
-    }
-
-    const data = await getDocs(q);
-    
-    const addData = data.docs.map((doc) => ({ ...doc.data() }));
-
-    //const nextPost = postData.concat(addData);
-   // realArr = nextPost;
-    setPostData([]);
-    setPostData(addData);
-
-    console.log(realArr);
-    console.log("handleSearch end");
-    lastVisible = data.docs[data.docs.length - 1];
-      
-  
-  };
-
   const getPostsData = async () => {
-    console.log("getPostsData");
     const q = query(
       collection(db, "posts"),
       orderBy("publishedTime", "desc"),
@@ -209,7 +145,6 @@ const PostListContainer = () => {
     realArr = nextPost;
     setPostData(nextPost);
 
-    console.log(realArr);
     lastVisible = data.docs[data.docs.length - 1];
   };
 
@@ -227,7 +162,7 @@ const PostListContainer = () => {
       <PostListBlock>
         <WritePostButtonWrapper>
         <SearchBarBlock>
-          <SearchBar onSearch={handleSearch} ></SearchBar>
+          <SearchBar></SearchBar>
         </SearchBarBlock>
           {localStorage.getItem("userid") !== null && (
             <Button blue to="/write">
@@ -249,13 +184,13 @@ const PostListContainer = () => {
                   />
                   <Tags tags={post["tags"]} />
                   <p>{post["body"]}</p>
-                  {post["userid"] === localStorage.getItem("userid") && (
+                </Link>
+                {post["userid"] === localStorage.getItem("userid") && (
                     <PostActionButtons
-                      onEdit={() => editPost(post["id"])}
-                      onRemove={() => deletePost(post["id"])}
+                      onEdit={() => editPost(post["_id"])}
+                      onRemove={() => deletePost(post["_id"])}
                     />
                   )}
-                </Link>
               </PostItemBlock>
             ))}
         </PostItemWrap>

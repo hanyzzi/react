@@ -48,9 +48,9 @@ const selectStyles = {
 
 const options = [
   { value: 'all', label: '전체' },
-  { value: 'title', label: '제목' },
-  { value: 'body', label: '내용' },
-  { value: 'comment', label: '댓글' },
+  { value: 'category1', label: '제목' },
+  { value: 'category2', label: '내용' },
+  { value: 'category3', label: '댓글' },
 ];
 
 function SearchBar(props) {
@@ -61,13 +61,13 @@ function SearchBar(props) {
     setSearchTerm(event.target.value);
   }
 
-  function handleSearchClick(event) {
-    props.onSearch(selectedOption,searchTerm);
+  function handleSearchClick() {
+    props.onSearch(searchTerm);
   }
 
   function handleKeyPress(event) {
     if (event.key === 'Enter') {
-      props.onSearch(selectedOption, searchTerm);
+      props.onSearch(searchTerm);
     }
   }
 

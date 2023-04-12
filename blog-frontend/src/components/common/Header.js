@@ -6,7 +6,6 @@ import Button from './Button';
 
 
 const HeaderBlock = styled.div`
-  z-index: 2;
   position: fixed;
   width: 100%;
   background: white;
