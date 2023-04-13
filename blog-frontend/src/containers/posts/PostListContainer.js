@@ -116,9 +116,8 @@ const PostListContainer = () => {
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {let nextq;
-
-      if(searchKeyword) { 
-        console.log(searchKeyword);
+      if(searchKeyword.length > 0) { 
+        console.log("키워드 있을 때");
         nextq = query(
           collection(db, "posts"),
           where(searchCategory, ">=", searchKeyword),
