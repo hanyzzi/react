@@ -100,6 +100,7 @@ function LoginPage() {
       }
 
       navigate('/');
+      //git test
     }
   };
 
